@@ -385,13 +385,14 @@ def delay_multiprocessing_help(
         order=None,
         latency=0,
     )
-    return circ_test(return_list, duration_list, False)
+    _, r, dr = circ_test(return_list, duration_list, False, True)
+    return r / dr
 
 
 def find_delay(
     delay_set, all_syl_on_list, all_syl_off_list, sp_list_n, threshold, cpu=16
 ):
-    delay_multiprocessing_help2 = partial(
+    delay_multiprocessing_hep2 = partial(
         delay_multiprocessing_help,
         all_syl_on_list,
         all_syl_off_list,
@@ -399,5 +400,5 @@ def find_delay(
         threshold,
     )
     with Pool(cpu) as p:
-        results = p.map(delay_multiprocessing_help2, delay_set)
-    return delay_set[np.argmin(results)], results
+        results = p.map(delay_multiprocessing_hep2, delay_set)
+    return delay_set[np.argmax(results)], results
